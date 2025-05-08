@@ -1274,7 +1274,7 @@ export default {
     const defaultReverseProxyTarget = env.REVERSE_PROXY_TARGET || "https://cloudflare.com";
     return executeReverseProxy(request, defaultReverseProxyTarget, undefined, env);
     
-  } catch (error) {{
+  } catch (error) {
     console.error(`FetchHandler: Unhandled error for ${request.url}. Error: ${error.message}`, error.stack);
     return new Response(`An unexpected server error occurred: ${error.message}`, { status: 500, headers: { ...CORS_HEADERS, "Content-Type": "text/plain;charset=utf-8" } });
   }
