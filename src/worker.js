@@ -1128,7 +1128,6 @@ async function handleWebSocketConnection(request, env) {
 // --- SECTION 5: Main Fetch Handler ---
 export default {
   async fetch(request, env, ctx) {
-      {
     const url = new URL(request.url);
     const { pathname, searchParams } = url;
     const method = request.method;
@@ -1279,8 +1278,6 @@ export default {
     console.error(`FetchHandler: Unhandled error for ${request.url}. Error: ${error.message}`, error.stack);
     return new Response(`An unexpected server error occurred: ${error.message}`, { status: 500, headers: { ...CORS_HEADERS, "Content-Type": "text/plain;charset=utf-8" } });
   }
-  }
 }
-};
 
 // --- END OF ASSEMBLED Cloudflare Worker Code ---
