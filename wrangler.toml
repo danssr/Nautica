@@ -1,10 +1,28 @@
-name = "nautica"
-main = "_worker.js"
-compatibility_date = "2024-09-23"
-compatibility_flags = ["nodejs_compat_v2"]
+# wrangler.toml
 
-[unsafe.metadata.observability]
-enabled = true
+name = "nautica" # Choose a unique name for your worker
+main = "src/worker.js"       # Path to your assembled worker script
+compatibility_date = "2024-10-30"
 
-[observability.logs]
-enabled = true
+# Optional: Build command
+# [build]
+# command = "npm run build"
+# watch_dir = "src"
+
+# --- Environment Variables (`env` object in the worker) ---
+# These are non-sensitive configurations for the top-level deployment.
+[vars]
+ROOT_DOMAIN = "danss.eu.org"
+SERVICE_NAME = "nautica"
+
+# Optional: Override default URLs if needed.
+# KV_PROXY_URL_OVERRIDE = "https://your-custom-kv-list.json"
+# PROXY_BANK_URL_OVERRIDE = "https://your-custom-proxy-bank.txt"
+# PROXY_HEALTH_CHECK_API_OVERRIDE = "https://your-health-check-api/check"
+# CONVERTER_URL_OVERRIDE = "https://your-converter-api/convert"
+# DONATE_LINK_OVERRIDE = "https://your-donation-link.com"
+# BAD_WORDS_LIST_URL_OVERRIDE = "https://your-custom-badwords-list.txt"
+
+REVERSE_PROXY_TARGET = "https://cloudflare.com"
+
+# KV, Durable Objects, R2 configurations would also go here if used at the top level.
