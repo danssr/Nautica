@@ -189,11 +189,6 @@ export default {
       const url = new URL(request.url);
       const upgradeHeader = request.headers.get("Upgrade");
 
-      // Gateway check
-      if (apiKey && apiEmail && accountID && zoneID) {
-        isApiReady = true;
-      }
-
       // Handle proxy client
       if (upgradeHeader === "websocket") {
         const proxyMatch = url.pathname.match(/^\/(.+[:=-]\d+)$/);
