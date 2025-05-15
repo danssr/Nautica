@@ -1,15 +1,16 @@
 import { connect } from "cloudflare:sockets";
-// import { createHash, createDecipheriv } from "node:crypto";
-// import { Buffer } from "node:buffer";
 
-// Variables
-const rootDomain = "foolvpn.me"; // Ganti dengan domain utama kalian
-const serviceName = "nautica"; // Ganti dengan nama workers kalian
-const apiKey = ""; // Ganti dengan Global API key kalian (https://dash.cloudflare.com/profile/api-tokens)
-const apiEmail = ""; // Ganti dengan email yang kalian gunakan
-const accountID = ""; // Ganti dengan Account ID kalian (https://dash.cloudflare.com -> Klik domain yang kalian gunakan)
-const zoneID = ""; // Ganti dengan Zone ID kalian (https://dash.cloudflare.com -> Klik domain yang kalian gunakan)
-let isApiReady = false;
+// Vars
+const rootDomain = globalThis.ROOT_DOMAIN || "danss.eu.org";
+const serviceName = globalThis.SERVICE_NAME || "nautica";
+
+const apiKey = globalThis.CF_API_KEY;
+const apiEmail = globalThis.CF_ACCOUNT_EMAIL;
+const accountID = globalThis.CF_ACCOUNT_ID;
+const zoneID = globalThis.CF_ZONE_ID;
+
+const isApiReady = !!(apiKey && apiEmail && accountID && zoneID);
+
 let proxyIP = "";
 let cachedProxyList = [];
 
@@ -17,15 +18,19 @@ let cachedProxyList = [];
 const APP_DOMAIN = `${serviceName}.${rootDomain}`;
 const PORTS = [443, 80];
 const PROTOCOLS = [reverse("najort"), reverse("sselv"), reverse("ss")];
+
 const KV_PROXY_URL = "https://raw.githubusercontent.com/FoolVPN-ID/Nautica/refs/heads/main/kvProxyList.json";
 const PROXY_BANK_URL = "https://raw.githubusercontent.com/FoolVPN-ID/Nautica/refs/heads/main/proxyList.txt";
+
 const DNS_SERVER_ADDRESS = "8.8.8.8";
 const DNS_SERVER_PORT = 53;
+
 const PROXY_HEALTH_CHECK_API = "https://id1.foolvpn.me/api/v1/check";
 const CONVERTER_URL = "https://api.foolvpn.me/convert";
 const DONATE_LINK = "https://trakteer.id/dickymuliafiqri/tip";
 const BAD_WORDS_LIST =
   "https://gist.githubusercontent.com/adierebel/a69396d79b787b84d89b45002cb37cd6/raw/6df5f8728b18699496ad588b3953931078ab9cf1/kata-kasar.txt";
+
 const PROXY_PER_PAGE = 24;
 const WS_READY_STATE_OPEN = 1;
 const WS_READY_STATE_CLOSING = 2;
