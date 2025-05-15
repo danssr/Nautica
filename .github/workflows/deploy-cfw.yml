@@ -3,15 +3,14 @@ name: Deploy Cloudflare Worker
 on:
   push:
     branches:
-      - main
-      - dev-next
+      - dev
   workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     name: Deploy Worker to Cloudflare
-    timeout-minutes: 10
+    timeout-minutes: 15
 
     steps:
       - name: Checkout Repository
@@ -25,30 +24,23 @@ jobs:
       - name: Install Wrangler CLI
         run: npm install -g wrangler
 
-      - name: Configure Wrangler Environment
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: echo "Wrangler configured."
-
       - name: Set Worker Secrets
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          CF_API_KEY_SECRET_VALUE: ${{ secrets.CF_API_KEY_SECRET }}
-          CF_API_EMAIL_SECRET_VALUE: ${{ secrets.CF_API_EMAIL_SECRET }}
-          CF_ACCOUNT_ID_SECRET_VALUE: ${{ secrets.CF_ACCOUNT_ID_SECRET }}
-          CF_ZONE_ID_SECRET_VALUE: ${{ secrets.CF_ZONE_ID_SECRET }}
+          CF_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CF_ACCOUNT_EMAIL: ${{ secrets.CLOUDFLARE_ACCOUNT_EMAIL }}
+          CF_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
         run: |
           echo "Setting CF_API_KEY secret..."
-          # Secrets are set for the top-level worker (no --env flag)
-          npx wrangler secret put CF_API_KEY <<< "${CF_API_KEY_SECRET_VALUE}"
+          npx wrangler secret put CF_API_KEY <<< "${CF_API_TOKEN}"
           echo "Setting CF_API_EMAIL secret..."
-          npx wrangler secret put CF_API_EMAIL <<< "${CF_API_EMAIL_SECRET_VALUE}"
-          echo "Setting CF_ACCOUNT_ID secret (for worker logic)..."
-          npx wrangler secret put CF_ACCOUNT_ID <<< "${CF_ACCOUNT_ID_SECRET_VALUE}"
+          npx wrangler secret put CF_API_EMAIL <<< "${CF_ACCOUNT_EMAIL}"
+          echo "Setting CF_ACCOUNT_ID secret..."
+          npx wrangler secret put CF_ACCOUNT_ID <<< "${CF_ACCOUNT_ID}"
           echo "Setting CF_ZONE_ID secret..."
-          npx wrangler secret put CF_ZONE_ID <<< "${CF_ZONE_ID_SECRET_VALUE}"
+          npx wrangler secret put CF_ZONE_ID <<< "${CF_ZONE_ID}"
 
       - name: Deploy Worker
         env:
