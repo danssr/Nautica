@@ -1,5 +1,7 @@
 import { connect } from "cloudflare:sockets";
 
+console.log(`Attempting to read: SERVICE_NAME`);
+
 // Vars
 const rootDomain = globalThis.ROOT_DOMAIN || "danss.eu.org";
 const serviceName = globalThis.SERVICE_NAME || "nautica";
