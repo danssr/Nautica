@@ -1,3 +1,28 @@
+console.log(`--- START OF SCRIPT ---`);
+console.log(`Attempting to read: SERVICE_NAME`);
+const envVarValue = globalThis.SERVICE_NAME;
+console.log(`Value of globalThis.SERVICE_NAME: >${envVarValue}<`);
+console.log(`Type of globalThis.SERVICE_NAME: ${typeof envVarValue}`);
+
+const serviceName = envVarValue || "nautica"; // Or use ?? if "" is valid
+console.log(`Resolved serviceName constant: ${serviceName}`);
+console.log(`--- END OF TOP-LEVEL VAR INIT ---`);
+
+export default {
+  async fetch(request, env, ctx) {
+    console.log(`--- START OF FETCH HANDLER ---`);
+    // Check the `env` object as well (for ES Modules)
+    const serviceNameFromEnvObj = env.SERVICE_NAME;
+    console.log(`Value of env.SERVICE_NAME: >${serviceNameFromEnvObj}<`);
+    console.log(`Type of env.SERVICE_NAME: ${typeof serviceNameFromEnvObj}`);
+
+    const resolvedServiceNameInFetch = env.SERVICE_NAME || "nautica_fetch_default";
+    console.log(`Resolved serviceName in fetch: ${resolvedServiceNameInFetch}`);
+    // ...
+    return new Response(`Hello from ${resolvedServiceNameInFetch}! ServiceName const was: ${serviceName}`);
+  }
+}
+
 import { connect } from "cloudflare:sockets";
 
 console.log(`Attempting to read: SERVICE_NAME`);
